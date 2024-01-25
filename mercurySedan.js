@@ -1,35 +1,55 @@
-//this includes the vehicle class as a module
-const VehicleModule = require("./vehicleBaseClass")
+// mercurySedan.js
+// This includes the vehicle class as a module
+const VehicleModule = require("./vehicleBaseClass");
 
-//this shows how to call from this module...
-let v = new VehicleModule.Vehicle("Mercury", "Sedan", "1965", "color", "mileage");
-console.log(v.make)
+class Car extends VehicleModule.Vehicle {
+    constructor(make, model, year, color, mileage) {
+        super(make, model, year, color, mileage);
+        this.maximumPassengers = 5;
+        this.passengers = 0;
+        this.numberOfWheels = 4;
+        this.maximumSpeed = 160;
+        this.fuel = 10;
+        this.scheduleService = false;
+    }
 
+    loadPassenger(num) {
+        if (this.passengers < this.maximumPassengers) {
+            this.passengers += num;
+            // Ensure passengers do not exceed maximum
+            this.passengers = Math.min(this.passengers, this.maximumPassengers);
+            return true; // availableRoom is true
+        }
+        return false; // availableRoom is false
+    }
 
-//After you write the derived Car class, you should test it out.
+    start() {
+        if (this.fuel > 0) {
+            this.started = true;
+            console.log("engine started...!!!");
+        } else {
+            this.started = false;
+            console.log("engine cannot start...");
+        }
+    }
 
-//Note: You can code your derived Car class here or make a file named index.js and do it there.
+    checkForService(mileage) {
+        if (mileage > 30000) {
+            this.scheduleService = true; // Note: scheduleService is a property
+            console.log("Time for maintenance.");
+        }
+    }
+}
 
+// Creating Instances and Testing Them
+let mercurySedan1 = new Car("Mercury", "Sedan", "2024", "Blue", 10000);
+console.log(mercurySedan1.make); // should print "Mercury"
 
-//TO DO: Code the Car subclass here or in index.js file, i.e. class Car extends Vehicle ...
+mercurySedan1.loadPassenger(4);
+console.log(mercurySedan1.passengers); // should print 4
 
+mercurySedan1.start(); // should print "engine started...!!!"
 
-
-
-
-
-
-
-
-
-
-
-//TO DO: Creating Instances and Testing Them
-
-//You can use the same instance "v" of the Vehicle class above for the base class.
-
-
-
-
-
-//Create at least two new instances of the Car class and test them here:
+// Using the renamed method
+mercurySedan1.checkForService(35000); // should set scheduleService to true and print "Time for maintenance."
+console.log(mercurySedan1.scheduleService); // should print true
